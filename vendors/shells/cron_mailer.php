@@ -31,6 +31,7 @@ class CronMailerShell extends Shell {
 		),
 		'messageId' => true,
 		'limit' => 50,
+		'log' => false
 	);
 	
 /**
@@ -83,6 +84,12 @@ class CronMailerShell extends Shell {
 			
 			if ($this->CronMailer->send()) {
 				$this->QueuedEmail->delete($email['QueuedEmail']['id']);
+			}
+			
+			if ($this->settings['log'] === true) {
+			
+				$this->log($this->CronMailer, 'mail');
+				
 			}
 			
 			$this->CronMailer->reset();
