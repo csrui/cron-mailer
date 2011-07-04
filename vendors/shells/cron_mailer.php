@@ -31,7 +31,8 @@ class CronMailerShell extends Shell {
 		),
 		'messageId' => true,
 		'limit' => 50,
-		'log' => false
+		'log' => false,
+		'deleteSent' => true
 	);
 	
 /**
@@ -60,7 +61,16 @@ class CronMailerShell extends Shell {
  * Main shell function
  */
 	function main() {
-		$queue = $this->QueuedEmail->find('all', array('limit' => $this->settings['limit']));
+		
+		$conditions = array();
+		
+		if ($this->settings['deleteSent'] != true) {
+			
+			$conditions = array('sent' => 0);
+			
+		}
+		
+		$queue = $this->QueuedEmail->find('all', array('conditions' => $conditions, 'limit' => $this->settings['limit']));
 		
 		if (empty($queue)) {
 			exit;
@@ -83,7 +93,18 @@ class CronMailerShell extends Shell {
 			$this->CronMailer->template         = 'dummy'; // required to trigger the _render function in the CronMailerComponent
 			
 			if ($this->CronMailer->send()) {
-				$this->QueuedEmail->delete($email['QueuedEmail']['id']);
+				
+				if ($this->settings['deleteSent'] == true) {
+				
+					$this->QueuedEmail->delete($email['QueuedEmail']['id']);
+					
+				} else {
+				
+					$this->QueuedEmail->id = $email['QueuedEmail']['id'];
+					$this->QueuedEmail->saveField('sent', true);
+					
+				}
+				
 			}
 			
 			if ($this->settings['log'] === true) {

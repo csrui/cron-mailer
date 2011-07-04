@@ -12,5 +12,7 @@ CREATE TABLE IF NOT EXISTS `queued_emails` (
   `textMessage` longtext,
   `htmlMessage` longtext,
   `created` datetime NOT NULL,
+  `modified` datetime DEFAULT NULL,
+  `sent` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM;

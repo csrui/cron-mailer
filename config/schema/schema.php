@@ -25,6 +25,8 @@ class QueueSchema extends CakeSchema {
 		'textMessage' => array('type' => 'text', 'null' => true, 'default' => NULL),
 		'htmlMessage' => array('type' => 'text', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'sent' => array('type' => 'tinyint', null => false, 'default' => 0, 'length' => 1),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'MyISAM')
 	);
