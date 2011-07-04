@@ -85,6 +85,8 @@ $config['CronMailer'] = array(
 	),
 	'messageId' => true,
 	'limit' => 50,
+	'log' => false,
+	'deleteSent' => true
 );
 ?></code></pre>
 
